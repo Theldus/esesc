@@ -1,5 +1,8 @@
 ESESC
 =====
+Note¹: This is a legacy release of ESESC that uses the ARMv7 ISA.
+Note²: This is a checkout from the latest commit from the version used at the ISCA 2014. For unknown reasons the branch *release_2013_armv7* does not works fine to me and I'm getting zero writeHit/writeMiss for any workloads.
+Note³: This is an experimental fork, and shouldn't be used in production.
 
 [![Build Status](https://travis-ci.org/masc-ucsc/esesc.png)](https://travis-ci.org/masc-ucsc/esesc)
 
