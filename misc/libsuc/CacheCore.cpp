@@ -38,6 +38,7 @@ Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 #define k_LRU        "LRU"
 #define k_LRUp       "LRUp"
 #define k_SHIP       "SHIP"
+#define k_MRU        "MRU"
 
 //
 // Class CacheGeneric, the combinational logic of Cache
@@ -155,7 +156,7 @@ CacheGeneric<State, Addr_t> *CacheGeneric<State, Addr_t>::create(const char *sec
      SescConf->isPower2(section, size) && 
      SescConf->isPower2(section, bsize) &&
      SescConf->isPower2(section, assoc) &&
-     SescConf->isInList(section, repl, k_RANDOM, k_LRU, k_SHIP, k_LRUp)) {
+     SescConf->isInList(section, repl, k_RANDOM, k_LRU, k_SHIP, k_LRUp, k_MRU)) {
     cache = create(s, a, b, u, pStr, sk, xr, shct_size);
   } else {
     // this is just to keep the configuration going, 
@@ -194,6 +195,10 @@ CacheAssoc<State, Addr_t>::CacheAssoc(int32_t size, int32_t assoc, int32_t blksi
     policy = LRU;
   else if (strcasecmp(pStr, k_LRUp)    == 0) 
     policy = LRUp;
+  else if (strcasecmp(pStr, k_MRU)     == 0) {
+    policy = MRU;
+    MSG("MRU Enabled");
+  }
   else {
     MSG("Invalid cache policy [%s]",pStr);
     exit(0);
@@ -306,10 +311,12 @@ typename CacheAssoc<State, Addr_t>::Line
     if (policy == RANDOM) {
       lineFree = &theSet[irand];
       irand = (irand + 1) & maskAssoc;
-    }else{
-      I(policy == LRU || policy == LRUp);
+    }else if (policy == LRU || policy == LRUp){
       // Get the oldest line possible
       lineFree = setEnd-1;
+    } else {
+      // MRU, get the first item, i.e, the most recently used
+      lineFree = theSet;
     }
 
     I(lineFree);

@@ -53,7 +53,7 @@
 #define LONG_REF 1       // 2^M - 2           | 1 | 6   | 14  |
 //-------------------------------------------------------------
 
-enum    ReplacementPolicy  {LRU, LRUp, RANDOM, SHIP};  //SHIP is RRIP with SHIP (ISCA 2010)
+enum    ReplacementPolicy  {LRU, LRUp, RANDOM, SHIP, MRU};  //SHIP is RRIP with SHIP (ISCA 2010)
 
 template<class State, class Addr_t>
   class CacheGeneric {
