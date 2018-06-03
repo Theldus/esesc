@@ -1,13 +1,29 @@
 #!/bin/bash
-
-if [ ! -f "CMakeLists.txt" ]; then
-	echo "Please make sure to run inside the ESESC root folder"
-	exit 1
-fi
-
 RED='\033[1;31m'
 GREEN='\033[1;32m'
 NC='\033[0m'
+
+if [ ! -f "CMakeLists.txt" ]; then
+	echo -e "${RED}Please make sure to run inside the ESESC root folder!${NC}"
+	exit 1
+fi
+
+if [ ! "$(grep -Ei 'debian|buntu|mint' /etc/*release)" ]; then
+	echo -e "${RED}This script only supports Debian-based distros!${NC}"
+	exit 1
+fi
+
+#Packages
+sudo apt-get update
+sudo apt-get -y install build-essential
+sudo apt-get -y install cmake
+sudo apt-get -y install libboost-dev
+sudo apt-get -y install bison flex
+sudo apt-get -y install g++
+sudo apt-get -y install python
+sudo apt-get -y install texinfo
+sudo apt-get -y install libglib2.0-dev
+sudo apt-get -y install libncurses5-dev
 
 #Build
 rm -rf ./build &> /dev/null
